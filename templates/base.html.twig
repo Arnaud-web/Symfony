@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+{# {{ dump(app.user) }} #}
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Welcome!{% endblock %}</title>
+  {% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">{% endblock %}
+</head>
+<nav style = "font-size : 13px"  class="navbar navbar-expand-sm bg-secondary navbar-dark">
+
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">SOcial</a>
+  </div>
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ path('home')}}">Accueil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="">Liste des Utilisateurs</a>
+      </li>
+
+    </ul>
+    <ul class="navbar-nav">
+      {% if not app.user %}
+      <li class="nav-item "><a class="nav-link" href="{{ path('security_login') }}">Connexion</a></li>
+      <li class="nav-item "><a class="nav-link" href="{{ path('security_registration') }}">Inscription</a></li>
+
+      {% else %}
+       <li class="nav-item" > <img  width  = "50px"   height= "50px" style = "border-radius:50%  " src = "/images/users/profils/{{app.user.imageProfil}}" > </li>
+      <li class="nav-link"><a class="btn btn-dark btn-sm"
+          href=" {{ path('user_profil',{'id':app.user.id}) }} ">{{app.user.username}}</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="{{ path('security_logout') }}">Deconnection</a> </li>
+      {% endif %}
+    </ul>
+
+    <ul class="navbar-nav" style = "color: black">
+      <form action="recherche.php" method="POST" accept-charset="utf-8" class="navbar-nav">
+        <li class="nav-item">
+          <input type="text" name="serch" placeholder="recherche" class="nav-link form-control" required>
+        </li>
+        <li class="nav-item">
+          <input type="submit" name="" value="rechercher" class="btn btn-dark ">
+        </li>
+      </form>
+    </ul>
+  </div>
+</nav>
+
+<body class="container">
+  <div class="container">
+    {% include 'nav_bar_profil.html.twig' %}
+    {% block body %} {% endblock %}
+    {% block javascripts %}{% endblock %}
+</body>
+<script src="js/jquery.js"></script>
+{% block script %} {% endblock %}
+
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {# {% include 'nav_bar_profil.html.twig' %} #}
+    <h2> Creation d'un article </h2>
+
+    {{form_start(formArticle) }}
+    {% if app.user %}
+        {{form_row(formArticle.authorId, {'attr':{'value':app.user.id}}) }}
+    {% endif %}
+    {% if article.image %}
+    <div class="row">
+        <div class="col-4" >
+            <img src="/images/articles/{{article.image}}" alt="" style="width:100% ;">  
+        </div>
+        <div class="col-4" >
+            {{form_row(formArticle.image_maj)}}
+        </div>
+    </div>
+    {% endif %}
+    {{form_row(formArticle.title,{'attr':{'placeholder':"Titre de l'article"}})}}
+    {{form_row(formArticle)}}
+        <input type="submit" class = "btn btn-success" value = "{% if editMode %} Enregistrer les modification {% else %} Ajouter un article {% endif %} ">
+    {{form_end(formArticle)}}
+
+    {# <pre>
+        {{ dump(edit) }}
+    </pre> #}
+
+{% endblock %}

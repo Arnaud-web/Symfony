@@ -1,0 +1,27 @@
+<div class="col-4"
+    style="min-width:300px ;margin-bottom: 10px; border-top: 6px solid dodgerblue; border-left:12px solid white; border-right :12px solid white; ">
+    <article>
+        <h3>{{ article.title }}</h3>
+        <div class="metadata" style="font-size: 13px;"> Ecrit le <span
+                style=" color:blue; ">{{article.createdAt | date("d/m/y")}}</span> `a
+            <span style="color:blue"> {{ article.createdAt | date(" H:i") }} </span>
+            dans le categorie <span style="color: blue;"> {{ article.category.title }} </span> </div>
+        <div class="contenu">
+            {# <p> {{article.image}} </p> #}
+            <img src="/images/articles/{{article.image}}" alt="" style="width:auto;max-width:100% ; max-height: 300px "><br>
+            {# <p> {{article.content | raw }} </p> #}
+            <p style="font-size:12px ; text-align: justify; " > {{article.description}} </p>
+            <span style="border-radius: 50%; font-size:13px; background:rgb(116, 116, 238) ; color:white"> &nbsp;{{article.comments | length}} </span>
+            <span style="font-size: 12px;" >Commentaires</span> <br>
+            <div class="btn-group">
+                <a class="btn btn-primary btn-sm" href="{{path('blog_show',{'id':article.id})}}">Afficher</a>
+                {% if app.user %}
+                {% if app.user == article.user %}
+                <a class="btn btn-success btn-sm " href="{{path('blog_edit',{'id':article.id,'id_u':app.user.id})}}">Modifier</a>
+                <a class="btn btn-danger btn-sm " href="{{path('blog_edit',{'id':article.id})}}">Supprimer</a>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>

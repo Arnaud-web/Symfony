@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col"
+        style="min-width:300px ;margin-bottom: 10px; border-top: 6px solid dodgerblue; border-left:12px solid white; border-right :12px solid white; margin-right:20px">
+        <article>
+            <h3>{{ article.title }}</h3>
+            <div class="metadata" style="font-size: 13px;"> Ecrit le <span
+                    style=" color:blue; ">{{article.createdAt | date("d/m/y")}}</span> `a
+                <span style="color:blue"> {{ article.createdAt | date(" H:i") }} </span>
+                dans le categorie <span style="color: blue;"> {{ article.category.title }} </span> </div>
+            <div class="col">
+                {# <p> {{article.image}} </p> #}
+                <img src="/images/articles/{{article.image}}" alt=""
+                    style="width:auto;max-width:100% ; max-height: 400px "><br>
+            </div>
+            <div class="col">
+                {# <p> {{article.content | raw }} </p> #}
+                <p style="font-size:12px ; text-align: justify; "> {{article.description}} </p>
+                <p style="font-size:12px ; text-align: justify; "> {{article.content}} </p>
+
+                <span style="border-radius: 50%; font-size:13px; background:rgb(116, 116, 238) ; color:white">
+                    &nbsp;{{article.comments | length}} </span>
+                <span style="font-size: 12px;">Commentaires</span> <br>
+                <div class="btn-group">
+                    {# <a class="btn btn-primary btn-sm" href="{{path('home')}}">Listes</a> #}
+                    {% if app.user %}
+                    {% if app.user == article.user %}
+                    <a class="btn btn-success btn-sm " href="{{path('blog_edit',{'id':article.id})}}">Modifier</a>
+                    <a class="btn btn-danger btn-sm " href="{{path('blog_edit',{'id':article.id})}}">Supprimer</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        <div class="form-group">
+            {% if app.user %}
+            {{form_start(commentForm)}}
+            {{form_row(commentForm.author, {'attr':{'value':app.user.username}}) }}
+            {{form_row(commentForm.authorId, {'attr':{'value':app.user.id}}) }}
+
+            {{form_row(commentForm.content,{'attr':{'class':'from-control','placeholder':'Commentaire'}})}}
+            <input class="" type="hidden" name="user" value="{{ app.user.username}}">
+            <input type="submit" value="Commenter" class="form-control btn-primary" class="padding-top:-12px">
+            {{form_end(commentForm)}}
+
+            {% else %}
+
+            {% endif %}
+        </div>
+
+        <section id="commentaires" style="background:rgb(208, 208, 212)">
+            {% for comment in article.comments %}
+            {# {{dump(comment.user)}} #}
+            <div class="container" style="padding:1px;padding-left:4px ;padding-right:4px">
+                <div class=""
+                    style="background: white ;border:2px solid rgb(161, 161, 173); margin-bottom:1px;padding:1px;">
+                    <div>
+                        <p>
+                            <span style="font-size: 12px;"><b>{{comment.user.username}}</b>
+                                <span style="font-size: 12px;"> {{comment.createdAt | date ('d/m/y - H:i')}} </span>
+                                <br></span>
+
+                            <small style="margin-left: 40px; font-size:15px ">{{comment.content | raw}}</small> </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+    {# {{ article = artileNext }} #}
+    <div class="col-3"
+        style="border-left: 2px solid rgb(212, 212, 212); min-width:300px ;border-top: 6px solid dodgerblue ;; background:rgb(226, 225, 222) ">
+        {% if articleNexts %}
+
+        {% for articleNext in articleNexts %}
+        <article class="article" style="border-bottom: 4px solid white; padding-bottom:10px " >
+            <h3>{{ articleNext.title }}</h3>
+            <div class="metadata" style="font-size: 13px;"> Ecrit le <span
+                    style=" color:blue; ">{{articleNext.createdAt | date("d/m/y")}}</span> `a
+                <span style="color:blue"> {{ articleNext.createdAt | date(" H:i") }} </span>
+                dans le categorie <span style="color: blue;"> {{ articleNext.category.title }} </span> </div>
+            <div class="">
+                {# <p> {{article.image}} </p> #}
+                <img src="/images/articles/{{articleNext.image}}" alt=""
+                    style="width:auto;max-width:100% ; max-height: 300px "><br>
+                {# <p> {{article.content | raw }} </p> #}
+                <p style="font-size:12px ; text-align: justify; "> {{articleNext.description}} </p>
+                <span style="border-radius: 50%; font-size:13px; background:rgb(116, 116, 238) ; color:white">
+                    &nbsp;{{articleNext.comments | length}} </span>
+                <span style="font-size: 12px;">Commentaires</span> <br>
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" href="{{path('blog_show',{'id':articleNext.id})}}">Afficher</a>
+                    {% if app.user %}
+                    {% if app.user == articleNext.user %}
+                    <a class="btn btn-success btn-sm " href="{{path('blog_edit',{'id':articleNext.id})}}">Modifier</a>
+                    <a class="btn btn-danger btn-sm " href="{{path('blog_edit',{'id':articleNext.id})}}">Supprimer</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+
+
+</div>
+{% endblock %}

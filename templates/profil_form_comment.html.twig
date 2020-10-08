@@ -1,0 +1,11 @@
+<div class="form-group">
+	{{form_start(commentForm, {'attr':{'action': path('blog_show',{'id':article.id}) }})}}
+	{{form_row(commentForm.author, {'attr':{'value':app.user.username}}) }}
+	{{form_row(commentForm.authorId, {'attr':{'value':app.user.id}}) }}
+
+	{{form_row(commentForm.content,{'attr':{'class':'from-control','placeholder':'Commentaire'}})}}
+	<input class="" type="hidden" name="user" value="{{ app.user.username}}">
+	<input type="submit" value="Commenter" class="form-control btn-primary" class="padding-top:-12px">
+	{{form_end(commentForm)}}
+
+</div>

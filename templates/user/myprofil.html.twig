@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{# {{ dump(app.user.articles) }} #}
+{# {% include 'nav_bar_profil.html.twig' %} #}
+    {# <h1> My profil </h1> #}
+        {% if app.user.imageCouverture %}
+        <div style = "display:block ;height: 300px;background-image: url('/images/users/couvertures/{{app.user.imageCouverture}}')" >
+        
+        {# <img  width = "500px" src = ""> #}
+        {% endif %}
+         {% if formImageCouverture %}
+            <div style = "color:white; background:black; padding-left:10%; padding-top:50px" >
+                {{form_start(formImageCouverture, {'attr':{'class':'row'}} ) }}
+                    <div class = "row" style = "align-items: center" >
+                        <div class = "col-7" >
+                           {{form_row( formImageCouverture.image_couverture, {'attr':{'class':'col-4'}} ) }}
+                           {{form_row( formImageCouverture.id, {'attr':{'value':app.user.id}} ) }}
+                        </div>
+                        <div class = "col-2" >
+                            <button class = " btn-sm btn-primary" > Enregistrer </button>
+                        </div>
+                    </div>
+                {{form_end(formImageCouverture)}}
+            </div>
+        {% else %}
+            <p style = "opacity:60%; background:black" ><a href = "{{ path('user_image_update', {'option' : 'image_couverture', 'id':app.user.id }) }}" > Changer le Photo de couverture </a> </p>
+        {% endif %}
+        
+        {# </div> #}
+    <div  style = "text-align: center;" > 
+        <div style = "margin-top:50px" >
+            
+                <img  style = "border-radius:50%" height = "200px" width = "200px" src = "/images/users/profils/{{app.user.imageProfil}}">
+                {# <a style = "padding-left:30px; font-size:30px" >{{app.user.username}} - {{app.user.email}} </a> #}
+        </div>
+           
+            {% if formImageProfil %}
+                {{form_start(formImageProfil, {'attr':{'class':''}} ) }}
+                    <div style ="opacity:100%; background:black" >
+                           {{form_row( formImageProfil.image_profil_update, {'attr':{'style':'width=70px'}} ) }}
+                           {{form_row( formImageProfil.option, {'attr':{'value':option}} ) }}
+                           {{form_row( formImageProfil.id, {'attr':{'value':app.user.id}} ) }}
+
+                            <button class = "form-control btn-sm btn-dark" > Enregistrer </button>
+                    </div>
+                {{form_end(formImageProfil)}}
+
+            {% endif %}
+            {% if not formImageProfil %}
+            <p  style = "opacity:60%; background:black" ><a href = "{{ path('user_image_update', {'option' : 'image_update', 'id':app.user.id }) }}" > Changer le Photo de profil </a> </p>
+            {% endif %}
+            
+        </div>
+    </div>
+    {# {{dump(app.user)}} #}
+  {% for article in articles %}
+     <div class="col"
+        style="min-width:300px ;margin-bottom: 10px; border-top: 6px solid dodgerblue; border-left:12px solid white; border-right :12px solid white; margin-right:20px">
+        <article>
+            <h3>{{ article.title }}</h3>
+            <div class="metadata" style="font-size: 13px;"> Ecrit le <span
+                    style=" color:blue; ">{{article.createdAt | date("d/m/y")}}</span> `a
+                <span style="color:blue"> {{ article.createdAt | date(" H:i") }} </span>
+                dans le categorie <span style="color: blue;"> {{ article.category.title }} </span> </div>
+            <div class="col" style = "text-align: center;"  >
+                {# <p> {{article.image}} </p> #}
+                <img src="/images/articles/{{article.image}}" alt=""
+                    style="width:auto;max-width:100% ; max-height: 400px "><br>
+            </div>
+            <div class="col">
+                {# <p> {{article.content | raw }} </p> #}
+                <p style="font-size:12px ; text-align: justify; "> {{article.description}} </p>
+                <p style="font-size:12px ; text-align: justify; "> {{article.content}} </p>
+
+                <span style="border-radius: 50%; font-size:13px; background:rgb(116, 116, 238) ; color:white">
+                    &nbsp;{{article.comments | length}} </span>
+                <span style="font-size: 12px;">Commentaires</span> <br>
+                <div class="btn-group">
+                    {# <a class="btn btn-primary btn-sm" href="{{path('home')}}">Listes</a> #}
+                    {% if app.user %}
+                    {% if app.user == article.user %}
+                    <a class="btn btn-success btn-sm " href="{{path('blog_edit',{'id':article.id})}}">Modifier</a>
+                    <a class="btn btn-danger btn-sm " href="{{path('blog_edit',{'id':article.id})}}">Supprimer</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    <a href = "{{path('blog_show',{'id':article.id})}}" > Commenter </a>
+      
+        <section id="commentaires" style="background:rgb(208, 208, 212)">
+            {% for comment in article.comments %}
+            {# {{dump(comment.user)}} #}
+            <div class="container" style="padding:1px;padding-left:4px ;padding-right:4px">
+                <div class=""
+                    style="background: white ;border:2px solid rgb(161, 161, 173); margin-bottom:1px;padding:1px;">
+                    <div>
+                        <p>
+                            <span style="font-size: 12px;"><b>{{comment.user.username}}</b>
+                                <span style="font-size: 12px;"> {{comment.createdAt | date ('d/m/y - H:i')}} </span>
+                                <br></span>
+
+                            <small style="margin-left: 40px; font-size:15px ">{{comment.content | raw}}</small> </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+<div class="btn-group" >
+    <a href="{{ path('home') }}" class="btn btn-primary btn-sm" style="margin: 1px;" >All</a>    
+
+    {% for categorie in categories  %}
+    <a href="{{ path('home_category',{'categorie':categorie.id, 'name':categorie.title}) }}" class="btn btn-primary btn-sm" style="margin: 1px;" >{{ categorie.title}}</a>    
+    {% endfor %}
+</div>
+<div class="row">
+    {% for article in articles %}
+    {% include "articleList.html.twig" %}
+    {% endfor %}
+</div>
+<div class="but col-1 btn-primary">
+    >
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="js/liste.js"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+{% if app.user.id == id %}
+{# {% include 'nav_bar_profil.html.twig' %} #}
+<div class="row">
+    {# <p>Bonjour</p> #}
+
+    {% for article in articles %}
+    {% include "articleList.html.twig" %}
+    {% endfor %}
+</div>
+{% endif %}
+
+
+{% endblock %}
